@@ -24,11 +24,34 @@ const options = {
 const datePicker = flatpickr('#datetime-picker', options);
 
 function startTimer() {
-  const endTime = datePicker.selectedDates[0];
-  const newTime = new Date();
-  let differenceTime = newTime - endTime;
+  const deadline = datePicker.selectedDates[0];
 
-  timer = setInterval(() => {
-    const { days, hours, minutes, seconds } = cnvert;
-  });
+  let timerId = null;
+
+  // функція для розрахунку часу
+  function countdownTimer() {
+    let diff = deadline - new Date();
+    if (diff <= 0) {
+      clearInterval(timerId);
+    }
+    const days = diff > 0 ? Math.floor(diff / 1000 / 60 / 60 / 24) : 0;
+    const hours = diff > 0 ? Math.floor(diff / 1000 / 60 / 60) % 24 : 0;
+    const minutes = diff > 0 ? Math.floor(diff / 1000 / 60) % 60 : 0;
+    const seconds = diff > 0 ? Math.floor(diff / 1000) % 60 : 0;
+    $days.textContent = days < 10 ? '0' + days : days;
+    $hours.textContent = hours < 10 ? '0' + hours : hours;
+    $minutes.textContent = minutes < 10 ? '0' + minutes : minutes;
+    $seconds.textContent = seconds < 10 ? '0' + seconds : seconds;
+  }
+  // оголошуємо змінні відображення таймеру
+  const $days = document.querySelector('.value[data-days]');
+  const $hours = document.querySelector('.value[data-hours]');
+  const $minutes = document.querySelector('.value[data-minutes]');
+  const $seconds = document.querySelector('.value[data-seconds]');
+
+  countdownTimer();
+
+  timerId = setInterval(countdownTimer, 1000);
 }
+// запуск таймера
+startBtn.addEventListener('click', startTimer);
