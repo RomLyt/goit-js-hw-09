@@ -3,9 +3,10 @@ import 'flatpickr/dist/flatpickr.min.css';
 import Notiflix from 'notiflix';
 
 const startBtn = document.querySelector('button[data-start]');
+const dateClose = document.querySelector('#datetime-picker');
 // деактивую кнопку старт
 startBtn.setAttribute('disabled', true);
-
+let timerId = null;
 const options = {
   enableTime: true,
   time_24hr: true,
@@ -51,9 +52,10 @@ const $minutes = document.querySelector('.value[data-minutes]');
 const $seconds = document.querySelector('.value[data-seconds]');
 
 function startTimer() {
-  let timerId = null;
   countdownTimer();
   timerId = setInterval(countdownTimer, 1000);
+  startBtn.setAttribute('disabled', true);
+  dateClose.setAttribute('disabled', true);
 }
 
 startBtn.addEventListener('click', startTimer);
